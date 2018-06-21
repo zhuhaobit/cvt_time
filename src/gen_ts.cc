@@ -72,6 +72,7 @@ int main(int argc, char** argv)
     }
     const char* filename = argv[1];
     ifstream str_file(filename);
+    FILE *fp_out = fopen("ml_lidar_ts", "w");
     string line;
     double curr_ts;
     date_time_t curr_date;
@@ -87,7 +88,7 @@ int main(int argc, char** argv)
                 istringstream iss(ret[0]);
                 iss >> curr_ts;
                 cvt_ts_2_date(curr_ts, &curr_date);
-                printf("%04d%02d%02d %02d:%02d:%02d.%03d\n",
+                fprintf(fp_out, "%04d%02d%02d %02d:%02d:%02d.%03d\n",
                         curr_date.year, curr_date.month, curr_date.day,
                         curr_date.hour, curr_date.minute, curr_date.second,
                         curr_date.usec / 1000);
