@@ -1,11 +1,8 @@
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <ctime>
-
-using namespace std;
+#include <stdlib.h>
+#include <stdio.h>
+#include <float.h>
+#include <string.h>
+#include <time.h>
 
 typedef struct Date_Time
 {
@@ -53,47 +50,27 @@ void cvt_date_2_ts(date_time_t date_time, double *ts)
     *ts = (double)tp + (double)date_time.usec/1000000;
 }
 
-vector<string> splitString(string str)
-{
-    istringstream ss(str);
-    string s;
-    vector<string> res;
-    while (ss >> s)
-        res.push_back(s);
-    return res;
-}
-
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     if (argc != 2)
     {
-        cout << "Usage: parse_string file" << endl;
-        return -1;
+        printf("Usage: cvt_time <second>.\n");
+        return 0;
     }
-    const char* filename = argv[1];
-    ifstream str_file(filename);
-    string line;
-    double curr_ts;
+
+    /* convert time to date */
+    double input = atof(argv[1]);
     date_time_t curr_date;
-    if (str_file.is_open())
-    {
-        while (str_file.good())
-        {
-            getline(str_file, line);
-            if (line.length() > 0)
-            {
-                vector<string> ret = splitString(line);
-                cout << ret[0] << endl;
-                istringstream iss(ret[0]);
-                iss >> curr_ts;
-                cvt_ts_2_date(curr_ts, &curr_date);
-                printf("%04d%02d%02d %02d:%02d:%02d.%03d\n",
-                        curr_date.year, curr_date.month, curr_date.day,
-                        curr_date.hour, curr_date.minute, curr_date.second,
-                        curr_date.usec / 1000);
-            }
-        }
-    }
+    cvt_ts_2_date(input, &curr_date);
+    printf("%04d%02d%02d %02d:%02d:%02d.%3d\n",
+            curr_date.year, curr_date.month, curr_date.day,
+            curr_date.hour, curr_date.minute, curr_date.second,
+            curr_date.usec / 1000);
+
+    /* convert date to time */
+    double curr_time;
+    cvt_date_2_ts(curr_date, &curr_time);
+    printf("%f\n", curr_time);
 
     return 0;
 }
