@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     string line;
     if (str_file.is_open())
     {
-        while (!str_file.eof())
+        while (str_file.good())
         {
             getline(str_file, line);
             if (line.length() > 0)
