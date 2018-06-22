@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 {
     if (argc != 2)
     {
-        printf("Usage: cvt_time <second>.\n");
+        printf("Usage: cvt_ts_to_date <second>.\n");
         return 0;
     }
 

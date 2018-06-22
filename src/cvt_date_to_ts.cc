@@ -23,10 +23,7 @@ void cvt_ts_2_date(double ts, date_time_t* date_time)
     sec = (int64_t) ts;
     usec = (int64_t) ((ts - sec) * 1000000);
     
-    struct timeval tp;
-    tp.tv_sec = (time_t) sec;
-    tp.tv_usec = (suseconds_t) usec;
-
+    time_t tp = (time_t) sec;
     struct tm *curr_local_time = NULL;
     curr_local_time = localtime(&tp);
     date_time->year = curr_local_time->tm_year + 1900;
@@ -57,23 +54,36 @@ int main(int argc, char **argv)
 {
     if (argc != 2)
     {
-        printf("Usage: cvt_time <second>.\n");
+        printf("Usage: cvt_date_to_ts <date time>.\n");
         return 0;
     }
 
     /* convert time to date */
-    double input = atof(argv[1]);
+    char buf1[16];
+    char buf2[8];
+    char buf3[8];
+    char buf4[8];
+    char buf5[8];
+    sscanf(argv[1], "%[0-9] %[0-9]:%[0-9]:%[0-9].%[0-9]",
+           buf1, buf2, buf3, buf4, buf5);
+
     date_time_t curr_date;
-    cvt_ts_2_date(input, &curr_date);
+    int date = atoi(buf1);
+    curr_date.year = date/10000;
+    curr_date.month = (date%10000)/100;
+    curr_date.day = (date%10000)%100;
+    curr_date.hour = atoi(buf2);
+    curr_date.minute = atoi(buf3);
+    curr_date.second = atoi(buf4);
+    curr_date.usec = atoi(buf5)*1000;
+
+    double curr_ts;
+    cvt_date_2_ts(curr_date, &curr_ts);
     printf("%04d%02d%02d %02d:%02d:%02d.%3d\n",
             curr_date.year, curr_date.month, curr_date.day,
             curr_date.hour, curr_date.minute, curr_date.second,
             curr_date.usec / 1000);
-
-    /* convert date to time */
-    double curr_time;
-    cvt_date_2_ts(curr_date, &curr_time);
-    printf("%f\n", curr_time);
+    printf("%f\n", curr_ts);
 
     return 0;
 }
