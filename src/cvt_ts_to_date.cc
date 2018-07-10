@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     double input = atof(argv[1]);
     date_time_t curr_date;
     cvt_ts_2_date(input, &curr_date);
-    printf("%04d%02d%02d %02d:%02d:%02d.%3d\n",
+    printf("%04d%02d%02d %02d:%02d:%02d.%03d\n",
             curr_date.year, curr_date.month, curr_date.day,
             curr_date.hour, curr_date.minute, curr_date.second,
             curr_date.usec / 1000);

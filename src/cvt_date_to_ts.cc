@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     double curr_ts;
     cvt_date_2_ts(curr_date, &curr_ts);
-    printf("%04d%02d%02d %02d:%02d:%02d.%3d\n",
+    printf("%04d%02d%02d %02d:%02d:%02d.%03d\n",
             curr_date.year, curr_date.month, curr_date.day,
             curr_date.hour, curr_date.minute, curr_date.second,
             curr_date.usec / 1000);
